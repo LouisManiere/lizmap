@@ -2,7 +2,7 @@ Louis Manière
 Date : 14/04/2022
 --------------------------------
 
-Description : 
+Description :
 installation en local avec ubuntu 20.04 d'un serveur de partage de carte intéractive Lizmap
 ici Lizmap 3.5.0 avec qgis-server 3.22.5 apache2 et php7.3
 installation d'Apache2
@@ -17,6 +17,8 @@ Ressources :
 # Procédure générale :
 https://georezo.net/forum/viewtopic.php?id=118349
 https://github.com/3liz/lizmap-web-client/issues/1388
+https://sist.pages.in2p3.fr/anf20-geomatique/04_annexes/install_lizmap.html
+https://docplayer.fr/6742145-Workshop-foss4g-fr-lizmap-publier-vos-cartes-qgis-sur-internet.html
 # Installation de Lizmap
 https://docs.lizmap.com/current/fr/install/linux.html
 # choix de la version de PHP
@@ -118,7 +120,7 @@ sudo nano localconfig.ini.php
 [modules]
 lizmap.installparam=demo
 ctrl+O pour enregistrer
-# on se remet dans le dossier lizmap client 
+# on se remet dans le dossier lizmap client
 cd /var/www/lizmap-web-client-$VERSION/
 # on change le propriétaire des dossier temp, var, www et qgis pour :www-data
 sudo chown :www-data temp/ lizmap/var/ lizmap/www lizmap/install/qgis/ -R
@@ -135,13 +137,3 @@ sudo lizmap/install/reset.sh install --keep-config --demo
 
 # copier un dossier avec le projet à mettre dans lizmap
 sudo cp -R /home/louismaniere/Documents/Projets/lizmap/projet_qgis/kaoa_plugin_qgis /var/www/lizmap-web-client-3.5.0/lizmap/install/qgis
-
-
-
-
-
-
-
-
-
-
