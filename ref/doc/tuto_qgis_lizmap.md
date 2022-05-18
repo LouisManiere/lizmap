@@ -35,6 +35,10 @@ Ici on définit les paramètres généraux de la carte, les éléments important
 * **Capacités WMS**
   * **Etendue annoncée** (se mettre sur une emprise plus grande que l'emprise des Couches)
   * **Restreindre les SCR** (mettre par défaut EPSG:3857 et ajouter par exemple pour la France EPSG:2154)
+  * **Exclure les mise en page** (si on ne souhaite pas pouvoir exporter la carte avec un des composeurs QGIS du projet)
+  * **Exclure les couches** (ajouter les couches que l'on ne souhaite pas voir du Lizmap)
+* **Capacités WMTS** (cocher **Publié** et le format image souhaité pour permettre de générer un flux)
+
 * L'**Etendue annoncée**
 * **Restreindre les CSR** mettre par défaut EPSG:3857 et ajouter par exemple pour la France EPSG:2154
 * **Exclure les couches** si des couches ne sont pas nécessaire pour la carte à diffuser
