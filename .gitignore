@@ -39,3 +39,4 @@ vignettes/*.pdf
 .Renviron
 
 /qgis_project/
+/ref/doc/server/
