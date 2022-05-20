@@ -72,7 +72,7 @@ http://localhost/cgi-bin/qgis_mapserv.fcgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=Get
 # vérifier la version à installer en accord avec QGIS-server
 # github : https://github.com/3liz/lizmap-web-client
 # pour les versions : https://github.com/3liz/lizmap-web-client/wiki/Versions
-# pour connaitre la version installée de qgis-server il faut lancer qgis_mapserv.fcgi :  
+# pour connaitre la version installée de qgis-server il faut lancer qgis_mapserv.fcgi :
 /usr/lib/cgi-bin/qgis_mapserv.fcgi
 
 cd /var/www/
