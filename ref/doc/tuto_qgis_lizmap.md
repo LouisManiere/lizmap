@@ -41,6 +41,8 @@ Ici on définit les paramètres généraux de la carte, les éléments important
 * **Capacités WFS** (cocher **Publié** pour permettre de générer un flux vecteur WFS)
 
 
+## Ouvrir un flux WMTS ou WFS depuis un projet Lizmap
+Le flux WMTS se trouve dans la **description** du projet sur le panneau des projets ou dans l'onglet **information** au sein d'un projet.
 
 
 * L'**Etendue annoncée**
