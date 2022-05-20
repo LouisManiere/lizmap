@@ -37,7 +37,11 @@ Ici on définit les paramètres généraux de la carte, les éléments important
   * **Restreindre les SCR** (mettre par défaut EPSG:3857 et ajouter par exemple pour la France EPSG:2154)
   * **Exclure les mise en page** (si on ne souhaite pas pouvoir exporter la carte avec un des composeurs QGIS du projet)
   * **Exclure les couches** (ajouter les couches que l'on ne souhaite pas voir du Lizmap)
-* **Capacités WMTS** (cocher **Publié** et le format image souhaité pour permettre de générer un flux)
+* **Capacités WMTS** (cocher **Publié** pour permettre de générer un flux raster WMTS)
+* **Capacités WFS** (cocher **Publié** pour permettre de générer un flux vecteur WFS)
+
+
+
 
 * L'**Etendue annoncée**
 * **Restreindre les CSR** mettre par défaut EPSG:3857 et ajouter par exemple pour la France EPSG:2154
