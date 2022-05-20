@@ -40,13 +40,21 @@ sudo apt install apache2
 # vérifier l'installation d'apache2
 http://localhost:80
 
-# attention de vérifier la verios actuelle de php avec celle d'apache2
-# voir https://devanswers.co/install-apache-mysql-php-lamp-stack-ubuntu-20-04/
+# peut être nécessaire d'installer software-properties-common pour faciliter l'ajout de dépôt
+sudo apt-get install software-properties-common
+# ajouter les dépôts php pour apache2  et mettre à jour
+sudo add-apt-repository ppa:ondrej/php
+sudo apt-get update
+
+# attention de vérifier la version actuelle de php avec celle d'apache2
+
 sudo apt-get install php7.3-fpm php7.3-cli php7.3-bz2 php7.3-curl php7.3-gd php7.3-intl php7.3-json php7.3-mbstring php7.3-pgsql php7.3-sqlite3 php7.3-xml php7.3-ldap
 
+# installer QGIS server et le module FastCGI (une question de performance d'apache je crois..., nécessaire pour QGIS server)
 # attention aux choix de version à installer, LTR ou non
 # compatibilité avec la version du client lizmap : https://github.com/3liz/lizmap-web-client/wiki/Versions
 sudo apt install qgis-server libapache2-mod-fcgid
+# permettre l'utilisation du module FastCGI sur apache
 sudo a2enmod fcgid
 sudo a2enconf serve-cgi-bin
 sudo service apache2 restart
@@ -84,7 +92,7 @@ sudo wget https://github.com/3liz/lizmap-web-client/archive/$VERSION.zip
 sudo unzip $VERSION.zip
 # créé un lien symbolique ou raccourci depuis /var/www/html/lizmap qui appelle /var/www/lizmap-web-client-$VERSION/lizmap/www/
 sudo ln -s /var/www/lizmap-web-client-$VERSION/lizmap/www/ /var/www/html/lizmap
-# supprimer le dossier zip maintenant unutil
+# supprimer le dossier zip maintenant inutile
 sudo rm $VERSION.zip
 # on va dans l'application installée lizmap-web-client
 cd /var/www/lizmap-web-client-$VERSION/
@@ -114,7 +122,7 @@ cd /var/www/lizmap-web-client-$VERSION/lizmap
 sudo composer install --ignore-platform-reqs
 sudo php install/installer.php
 # dans dosier config
-cd /var/config
+cd ./var/config
 sudo nano localconfig.ini.php
 # ajouter à la fin
 [modules]
@@ -137,3 +145,70 @@ sudo lizmap/install/reset.sh install --keep-config --demo
 
 # copier un dossier avec le projet à mettre dans lizmap
 sudo cp -R /home/louismaniere/Documents/Projets/lizmap/projet_qgis/kaoa_plugin_qgis /var/www/lizmap-web-client-3.5.0/lizmap/install/qgis
+
+
+# installer le serveur FTP pour permettre d'envoyer des dossier depuis un poste distant
+# ressource : https://docs.lizmap.com/3.5/en/install/linux.html
+sudo apt-get install pure-ftpd pure-ftpd-common
+# avec sudo pour la permission
+# Creating an empty shell for users
+ln /bin/false /bin/ftponly
+# Configuring FTP server
+sudo nano /etc/shells
+# ajouter à la fin
+/bin/ftponly
+# Each user is locked in his home
+sudo nano /etc/pure-ftpd/conf/ChrootEveryone
+# ajouter
+yes
+# Allow to use secure FTP over SSL
+sudo nano /etc/pure-ftpd/conf/TLS
+# ajouter
+1
+# Configure the properties of directories and files created by users
+sudo nano /etc/pure-ftpd/conf/Umask
+# ajouter
+133 022
+# The port range for passive mode (opening outwards)
+sudo nano /etc/pure-ftpd/conf/PassivePortRange
+# ajouter
+5400 5600
+# Creating an SSL certificate for FTP
+openssl req -x509 -nodes -newkey rsa:1024 -keyout /etc/ssl/private/pure-ftpd.pem -out /etc/ssl/private/pure-ftpd.pem
+chmod 400 /etc/ssl/private/pure-ftpd.pem
+Country Name (2 letter code) [AU]:FR
+State or Province Name (full name) [Some-State]:Auvergne Rhone Alpes
+Locality Name (eg, city) []:Lyon
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:METIS
+Organizational Unit Name (eg, section) []:METIS
+Common Name (e.g. server FQDN or YOUR name) []:METIS
+Email Address []:l.maniere@metis-reseaux.fr
+# Restart FTP server
+sudo service pure-ftpd restart
+
+# Creating a user account
+
+MYUSER=demo
+# add group
+sudo groupadd client
+# add user in client
+sudo useradd -g client -d /home/data/ftp/$MYUSER -s /bin/ftponly -m $MYUSER -k /home/data/ftp/template/
+# set password for user demo (demo)
+sudo passwd $MYUSER
+# Fix the user's FTP root
+sudo chmod a-w /home/data/ftp/$MYUSER
+# Creating empty directories that will be the future Lizmap Web Client directories
+sudo mkdir /home/data/ftp/$MYUSER/qgis
+sudo chown $MYUSER:client /home/data/ftp/$MYUSER/qgis
+sudo mkdir /home/data/ftp/$MYUSER/qgis/test
+sudo chown $MYUSER:client /home/data/ftp/$MYUSER/qgis/test
+
+mkdir /home/data/ftp/$MYUSER/qgis/rep2 && chown $MYUSER:client /home/data/ftp/$MYUSER/qgis/rep2
+mkdir /home/data/ftp/$MYUSER/qgis/rep3 && chown $MYUSER:client /home/data/ftp/$MYUSER/qgis/rep3
+mkdir /home/data/ftp/$MYUSER/qgis/rep4 && chown $MYUSER:client /home/data/ftp/$MYUSER/qgis/rep4
+mkdir /home/data/ftp/$MYUSER/qgis/rep5 && chown $MYUSER:client /home/data/ftp/$MYUSER/qgis/rep5
+# Create a directory to store the cached server
+sudo mkdir /home/data/cache
+sudo mkdir /home/data/cache/$MYUSER
+sudo chmod 700 /home/data/cache/$MYUSER -R
+sudo chown www-data:www-data /home/data/cache/$MYUSER -R
